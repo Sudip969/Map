@@ -3,7 +3,7 @@
     <button type="button" @click="assign">!</button>
     <ul v-for="(i, j) in arr" :key="j">
       <li>
-        <input type="text" v-model="i.name" @input="dbtn" />
+        <input type="text" v-model="i.name" @input="dbtn(j)" />
       </li>
       <li>
         <input type="text" v-model="i.id" />
@@ -26,11 +26,21 @@ export default {
         { name: "di", id: 2 },
         { name: "", id: 3 },
       ],
+      ch:{},
       arrdup: [],
-      per: true,
+    
     };
   },
   methods: {
+    dbtn(a){
+      if(this.arr[a].name !==this.arrdup[a].name){
+      this.ch[a]=true
+      console.log(this.ch)
+      }
+      else{
+          delete this.ch[a]
+      }
+    }
     // dbtn() {
     //   let count = 0;
     //   let nCount = 0;
@@ -45,31 +55,31 @@ export default {
     //   }
     //   this.per = count !== this.arrdup.length - nCount;
     // },
-    dbtn() {
-  let count = 0;
-  let nCount = 0;
+//     dbtn() {
+//   let count = 0;
+//   let nCount = 0;
   
-  // Using array.reduce() to calculate count and nCount
+//   // Using array.reduce() to calculate count and nCount
 
  
-  count = this.arr.reduce((acc, item, index) => {
-    if (item.name !== "") {
-      if (item.name !== this.arrdup[index].name) {
-        return acc + 1;
-      }
-    }
-    return acc;
-  }, 0);
+//   count = this.arr.reduce((acc, item, index) => {
+//     if (item.name !== "") {
+//       if (item.name !== this.arrdup[index].name) {
+//         return acc + 1;
+//       }
+//     }
+//     return acc;
+//   }, 0);
   
-  nCount = this.arr.reduce((acc, item) => {
-    if (item.name === "") {
-      return acc + 1;
-    }
-    return acc;
-  }, 0);
+//   nCount = this.arr.reduce((acc, item) => {
+//     if (item.name === "") {
+//       return acc + 1;
+//     }
+//     return acc;
+//   }, 0);
 
-  this.per = count !== this.arrdup.length - nCount;
-}
+//   this.per = count !== this.arrdup.length - nCount;
+// }
   },
   // methods: {
   //   nameChanged(id) {
@@ -82,13 +92,20 @@ export default {
   //   },
   // },
   created() {
-const All="All"
+// const All="All"
   this.arrdup={
     'All':[...this.arr]
   }
-    // this.arrdup = JSON.parse(JSON.stringify(this.arr));
-    console.log(this.arrdup[All]);
+    this.arrdup = JSON.parse(JSON.stringify(this.arr));
+    // console.log(this.arrdup[All]);
   },
+  computed:{
+    per(){
+      if(this.arr.length === Object.keys( this.ch).length){
+        return false
+      }else{return true}
+    }
+  }
 };
 </script>
 <!-- <script >
